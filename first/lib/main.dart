@@ -1,4 +1,5 @@
 import 'package:first/Student.dart';
+import 'package:first/StudentUpdate.dart';
 import 'package:flutter/material.dart';
 
 import 'StudentAdd.dart';
@@ -110,6 +111,12 @@ class _MyAppState extends State<MyApp> {
                   ],
                 ),
                 onPressed: () {
+                  print(selectedStudent.id);
+                  if (selectedStudent.id != null && selectedStudent.id != 0 ) {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => StudentUpdate(selectedStudent)));
+                  } else {
+                    alert(context, 'Öğrenci Seçilmedi');
+                  }
                 },
               ),
             ),
