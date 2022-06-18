@@ -17,6 +17,10 @@ class Student {
     this.grade = grade;
   }
 
+  Student.form() {
+
+  }
+
   String? get getName => this.name;
 
   void set setName(String name) => this.name = name;

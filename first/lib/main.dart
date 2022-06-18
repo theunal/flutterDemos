@@ -1,6 +1,8 @@
 import 'package:first/Student.dart';
 import 'package:flutter/material.dart';
 
+import 'StudentAdd.dart';
+
 void main() {
   runApp(MaterialApp(home: MyApp()));
 }
@@ -91,6 +93,7 @@ class _MyAppState extends State<MyApp> {
                   ],
                 ),
                 onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => StudentAdd(students)));
                 },
               ),
             ),
