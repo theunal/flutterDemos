@@ -5,22 +5,28 @@ void main() {
   runApp(MaterialApp(home: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   var ogrenciler = ['yusuf', 'unal', 'ali', 'veli'];
+
   List<Student> students = [
-    Student('yusuf', 'unal', 50),
-    Student('yusa', 'unal', 50),
-    Student('sezai', 'unal', 55),
-    Student('yusuf 2', 'unal', 40)
+    Student.withId(1,'yusuf', 'unal', 50),
+    Student.withId(2,'yusa', 'unal', 50),
+    Student.withId(3,'sezai', 'unal', 55),
+    Student.withId(4,'yusuf 2', 'unal', 40)
   ];
+
+  Student selectedStudent = Student.withId(0,'', '', 0);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text('my first app')),
         body: buildBody(context)
-
-
     );
   }
 
@@ -33,6 +39,10 @@ class MyApp extends StatelessWidget {
   }
 
   Widget buildBody(BuildContext context) {
+
+
+
+
     return Column(
       children: <Widget>[
         Expanded(
@@ -50,16 +60,83 @@ class MyApp extends StatelessWidget {
                   subtitle: Text("sınavdan aldıgı not: "+students[index].grade.toString() + ' ' +
                       students[index].getStatus!),
                   trailing: buildStatusIcon(students[index].grade!),
-                  onLongPress: () {
-                    var alert = AlertDialog(
-                        title: Text(students[index].name! + ' ' + students[index].lastName!),
-                        content: Text('sınav notu: '+students[index].grade!.toString() + ' ' + students[index].getStatus!));
-                    showDialog(
-                        context: context, builder: (BuilderContext) => alert);
+                  onTap: () {
+                    // var alert = AlertDialog(
+                    //     title: Text(students[index].name! + ' ' + students[index].lastName!),
+                    //     content: Text('sınav notu: '+students[index].grade!.toString() + ' ' + students[index].getStatus!));
+                    // showDialog(
+                    //     context: context, builder: (BuilderContext) => alert);
+
+                    setState(() {
+                      selectedStudent = students[index];
+                    });
                   },
                 );
               }),
+        ),
 
+
+
+        Text('Seçili öğrenci: '+ selectedStudent.getName!),
+        Row(
+          children: <Widget>[
+            Flexible(
+              fit: FlexFit.tight,
+              flex: 2,
+              child: RaisedButton(
+                child: Row(
+                  children: [
+                    Icon(Icons.add),
+                    Text('Yeni Öğrenci'),
+                  ],
+                ),
+                onPressed: () {
+                },
+              ),
+            ),
+            SizedBox(width: 5),
+            Flexible(
+              fit: FlexFit.tight,
+              flex: 2,
+              child: RaisedButton(
+                child: Row(
+                  children: [
+                    Icon(Icons.update),
+                    SizedBox(width: 5), // boşluk atıypr
+                    Text('Güncelle'),
+                  ],
+                ),
+                onPressed: () {
+                },
+              ),
+            ),
+            SizedBox(width: 5),
+            Flexible(
+              fit: FlexFit.tight,
+              flex: 1,
+              child: RaisedButton(
+                child: Row(
+                  children: [
+                    Icon(Icons.delete),
+                    SizedBox(width: 5), // boşluk atıypr
+                    Text('Sil'),
+                  ],
+                ),
+                onPressed: () {
+                  if (selectedStudent.id != null && selectedStudent.id != 0) {
+                    setState(() {
+                      students.remove(selectedStudent);
+                    });
+                    alert(context, 'Öğrenci Silindi');
+                    selectedStudent = Student.withId(0,'', '', 0);
+                  } else {
+                    alert(context, 'Öğrenci Seçilmedi');
+                  }
+                  print(students);
+                },
+              ),
+            )
+          ],
         ),
         Center(
             child: RaisedButton(
@@ -85,3 +162,30 @@ class MyApp extends StatelessWidget {
     }
   }
 }
+
+void alert(BuildContext context, var title) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      });
+}
+
+
+// input form örneği
+// TextField(
+// decoration: InputDecoration(
+// labelText: 'Adınız',
+// hintText: 'Adınızı giriniz',
+// border: OutlineInputBorder()),
+// )
