@@ -41,10 +41,22 @@ class MyApp extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                // return Text(students[index].name!);
                 return ListTile(
+                  //leading: Icon(Icons.person),
+                  leading: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                        'https://picsum.photos/200/300?image=${index + 1}'),
+                  ),
                   title: Text(students[index].name! + ' ' + students[index].lastName!),
                   subtitle: Text("sınavdan aldıgı not: "+students[index].grade.toString() + ' ' +
-                      sinavHesapla(students[index].grade!)),
+                      students[index].getStatus!),
                   trailing: buildStatusIcon(students[index].grade!),
+                  onLongPress: () {
+                    var alert = AlertDialog(
+                        title: Text(students[index].name! + ' ' + students[index].lastName!),
+                        content: Text('sınav notu: '+students[index].grade!.toString() + ' ' + students[index].getStatus!));
+                    showDialog(
+                        context: context, builder: (BuilderContext) => alert);
+                  },
                 );
               }),
 
