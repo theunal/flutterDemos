@@ -15,11 +15,11 @@ class CartService {
     cartItems.add(cart);
   }
 
-  static void removeFromCart(int cart) {
+  static void removeFromCart(Cart cart) {
     cartItems.remove(cart);
   }
 
-  static List<Cart> getCart() {
+  static List<Cart> getAll() {
     return cartItems;
   }
 }
