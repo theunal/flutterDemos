@@ -19,6 +19,64 @@ class Iskele extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('alışveriş listesi app'),
+      ),
+      body: AnaEkran(),
+    );
+  }
+}
+
+class AnaEkran extends StatefulWidget {
+  @override
+  State<AnaEkran> createState() => _AnaEkranState();
+}
+
+class _AnaEkranState extends State<AnaEkran> {
+  var list = [];
+  TextEditingController t1 = TextEditingController();
+
+  add() {
+    setState(() {
+      list.add(t1.text);
+      t1.clear();
+    });
+  }
+
+  delete() {
+    setState(() {
+      list.remove(t1.text);
+      t1.clear();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          Flexible(
+            child: ListView.builder(
+                itemCount: list.length,
+                itemBuilder: (context, index) => ListTile(
+                      subtitle: Text(index.toString()),
+                      title: Text(list[index]),
+                    )),
+          ),
+          TextField(
+            controller: t1,
+          ),
+          RaisedButton(
+            onPressed: add,
+            child: Text('todo ekle'),
+          ),
+          RaisedButton(
+            onPressed: delete,
+            child: Text('todo sil'),
+          ),
+        ],
+      ),
+    );
   }
 }
